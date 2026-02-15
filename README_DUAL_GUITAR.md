@@ -8,7 +8,7 @@ This guide documents the successful configuration of Rocksmith 2014 with **two R
 *   **Game:** Rocksmith 2014 Remastered (Steam)
 *   **Compatibility Tool:** Proton 8.0
 *   **Audio Hardware:** Two Official Real Tone Cables (RTC)
-*   **System Packages:** `jackd`, `qjackctl`, `wineasio`, `alsa-utils` (for `alsa_in`), `python3-psutil`.
+*   **System Packages:** `jackd`, `qjackctl`, `wineasio`, `alsa-utils` (for `alsa_in`), `python3-psutil`, `wmctrl`, `xprop`.
 *   **User Groups:** User must be in the `audio` group (`sudo usermod -aG audio $USER`).
 
 ## 2. Core Components Installation
@@ -41,19 +41,21 @@ This guide documents the successful configuration of Rocksmith 2014 with **two R
 
 ## 4. The Dual Guitar Automation Script (Recommended)
 
-The Python script `dual_rocksmith.py` provides the most stable automation using a "Blind Wait" strategy to avoid crashing the audio engine.
+The Python script `dual_rocksmith.py` provides full, crash-safe automation by combining D-Bus monitoring with window focus management.
 
 **Usage:**
 ```bash
-python3 dual_rocksmith.py
+./dual_rocksmith.py
 ```
 
-**What it does:**
-1.  **Launches Game:** Detaches Rocksmith so it survives terminal closure.
-2.  **Bridges Audio:** Starts `alsa_in` for the second guitar and monitors for errors.
-3.  **Blind Wait (30s):** After the game process appears, it waits 30s for the engine to settle.
-4.  **Auto-Connect:** Automatically connects `RTC_2:capture_1` to `Rocksmith2014:in_2`.
-5.  **Clean Exit:** Shuts down the bridge when the game closes.
+**What the script does:**
+1.  **Auto-manages JACK:** Checks if JACK is running with D-Bus support. Starts it if stopped, and shuts it down on exit if the script started it.
+2.  **Audio Bridge:** Starts `alsa_in` for the second guitar *before* launching the game.
+3.  **Launches Game:** Starts Rocksmith in a detached session.
+4.  **D-Bus Monitoring:** Uses non-intrusive D-Bus queries to detect when Rocksmith's audio engine is live. This avoids the "Client Noise" crashes caused by polling.
+5.  **Focus Automation:** Automatically captures your terminal ID and the Rocksmith window ID to perform the necessary "Alt-Tab" workaround for connection stability.
+6.  **Auto-Connect:** Automatically connects `RTC_2:capture_1` to `Rocksmith2014:in_2` after a 10s stabilization delay.
+7.  **Robust Cleanup:** Monitors the game process and shuts down the audio bridge when the game exits.
 
 ## 5. Manual Setup Procedure
 
