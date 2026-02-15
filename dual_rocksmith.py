@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# Compatible with Python 3.6+
+
 import subprocess
 import time
 import threading
