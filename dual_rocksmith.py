@@ -196,9 +196,9 @@ def main():
     # 3. Start Rocksmith Launcher (Detached)
     print(f"Launching Rocksmith...")
     try:
-        subprocess.Popen([LAUNCHER_PATH], start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.Popen(["kde-inhibit", "--screenSaver", LAUNCHER_PATH], start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except FileNotFoundError:
-        print("Error: Launcher not found.")
+        print("Error: Launcher not found or kde-inhibit not available.")
         sys.exit(1)
 
     # 4. Wait for game to start
