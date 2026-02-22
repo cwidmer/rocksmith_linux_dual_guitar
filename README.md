@@ -1,5 +1,9 @@
 # Rocksmith 2014 Dual Guitar Setup on Linux (openSUSE)
 
+This repository documents the journey of getting Rocksmith to work with two guitars on Linux.
+
+The initial single-guitar setup was based on the excellent work at [linux-rocksmith](https://codeberg.org/nizo/linux-rocksmith). Building upon that foundation, the dual-guitar configuration was cobbled together through extensive tinkering, Gemini's assistance, and a significant amount of trial and error.
+
 This guide documents the successful configuration of Rocksmith 2014 with **two Real Tone Cables** on openSUSE Leap 15.6, using Proton 8.0, JACK, WineASIO, and RS_ASIO.
 
 ## 1. Prerequisites
